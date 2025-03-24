@@ -27,14 +27,18 @@ def run_flask():
     port = int(os.environ.get("PORT", 10000))  # Default to 10000 if no port is found
     app.run(host="0.0.0.0", port=port)
 
-# Load all cogs from the cogs folder with error handling
-for filename in os.listdir("./cogs"):
-    if filename.endswith(".py"):
-        try:
-            bot.load_extension(f"cogs.{filename[:-3]}")
-            print(f"Loaded cog: {filename}")
-        except Exception as e:
-            print(f"Failed to load cog {filename}: {e}")
+# Load all cogs from the cogs folder with error handling and await the load_extension
+async def load_cogs():
+    for filename in os.listdir("./cogs"):
+        if filename.endswith(".py"):
+            try:
+                await bot.load_extension(f"cogs.{filename[:-3]}")
+                print(f"Loaded cog: {filename}")
+            except Exception as e:
+                print(f"Failed to load cog {filename}: {e}")
+
+# Run the cog loading as a coroutine
+bot.loop.create_task(load_cogs())
 
 @bot.event
 async def on_ready():
