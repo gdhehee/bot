@@ -1,5 +1,6 @@
 discord.py
 python-dotenv
+sqlite3  # SQLite is part of the Python standard library; you may omit this line.
 aiohttp
 
 pymongo
