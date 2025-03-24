@@ -13,7 +13,7 @@ intents = discord.Intents.all()
 bot = commands.Bot(command_prefix=COMMAND_PREFIX, intents=intents)
 
 # Detect Render port for web service (if necessary)
-port = int(os.environ.get("PORT", 5000))  # Default to 5000 if no port is found
+port = int(os.environ.get("PORT", 10000))  # Default to 10000 if no port is found
 
 # Load all cogs from the cogs folder
 for filename in os.listdir("./cogs"):
