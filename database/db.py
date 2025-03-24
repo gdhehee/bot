@@ -1,35 +1,23 @@
-import sqlite3
+
+import pymongo
 import os
+from dotenv import load_dotenv
 
-DB_PATH = os.path.join(os.path.dirname(__file__), "..", "bot.db")
-conn = sqlite3.connect(DB_PATH)
-cursor = conn.cursor()
+load_dotenv()  # Loads .env file
 
-# Create tables if not exist
-cursor.execute("""
-CREATE TABLE IF NOT EXISTS warnings (
-    user_id INTEGER,
-    guild_id INTEGER,
-    count INTEGER DEFAULT 0
-)
-""")
-cursor.execute("""
-CREATE TABLE IF NOT EXISTS invites (
-    user_id INTEGER,
-    guild_id INTEGER,
-    count INTEGER DEFAULT 0
-)
-""")
-cursor.execute("""
-CREATE TABLE IF NOT EXISTS usage (
-    user_id INTEGER,
-    date TEXT,
-    count INTEGER DEFAULT 0
-)
-""")
-# Add more tables as needed for economy, backup, etc.
+# MongoDB setup
+MONGO_URI = os.getenv("MONGO_URI")  # Set in .env file
+client = pymongo.MongoClient(MONGO_URI)
+db = client['ultimate_bot']  # The database name
+warnings_collection = db['warnings']
+invites_collection = db['invites']
+usage_collection = db['usage']
 
-conn.commit()
+# Create necessary indexes for collections
+warnings_collection.create_index([('user_id', pymongo.ASCENDING), ('guild_id', pymongo.ASCENDING)], unique=True)
+invites_collection.create_index([('user_id', pymongo.ASCENDING), ('guild_id', pymongo.ASCENDING)], unique=True)
+usage_collection.create_index([('user_id', pymongo.ASCENDING), ('date', pymongo.ASCENDING)], unique=True)
 
-def get_db():
-    return conn, cursor
+# Function to get the MongoDB collections
+def get_collections():
+    return warnings_collection, invites_collection, usage_collection
