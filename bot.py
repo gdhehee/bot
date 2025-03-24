@@ -32,8 +32,14 @@ async def load_cogs():
     for filename in os.listdir("./cogs"):
         if filename.endswith(".py"):
             try:
-                await bot.load_extension(f"cogs.{filename[:-3]}")
+                cog = f"cogs.{filename[:-3]}"
+                await bot.load_extension(cog)
                 print(f"Loaded cog: {filename}")
+                
+                # Await add_cog() for each cog to ensure proper loading
+                cog_module = __import__(cog, fromlist=["setup"])
+                await bot.add_cog(cog_module)
+                print(f"Successfully added cog: {filename}")
             except Exception as e:
                 print(f"Failed to load cog {filename}: {e}")
 
