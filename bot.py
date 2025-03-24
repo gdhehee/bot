@@ -1,4 +1,3 @@
-
 import discord
 from discord.ext import commands
 import os
@@ -33,7 +32,7 @@ async def load_cogs():
         if filename.endswith(".py"):
             try:
                 cog = f"cogs.{filename[:-3]}"
-                await bot.load_extension(cog)  # Await load_extension, not add_cog
+                await bot.load_extension(cog)  # Await load_extension
                 print(f"Loaded cog: {filename}")
             except Exception as e:
                 print(f"Failed to load cog {filename}: {e}")
