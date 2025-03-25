@@ -9,6 +9,7 @@ services:
       python bot.py
     envVars:
       - key: TOKEN
+      - key: MONGODB_URL
         sync: false  # Add manually in Render's environment settings
       - key: PORT
         value: "10000"
