@@ -1,15 +1,17 @@
 services:
   - type: web
-    name: UltimateBot
+    name: discord-bot
     env: python
     plan: free
     buildCommand: |
       pip install -r requirements.txt
-    startCommand: |
-      python bot.py
+    startCommand: python bot.py
     envVars:
-      - key: TOKEN
       - key: MONGODB_URL
-        sync: false  # Add manually in Render's environment settings
+        sync: false
+      - key: TOKEN
+        sync: false
       - key: PORT
-        value: "10000"
+        value: "10000"  # Set the port explicitly
+
+
